@@ -64,7 +64,8 @@ class Users
 
         $pdoStatement->bindValue("email",$_POST["email"]);
         $pdoStatement->bindValue("username",$_POST["username"]);
-        $pdoStatement->bindValue("password_",$_POST["password_"]);
+        $crpPassword = password_hash($_POST["password_"],PASSWORD_BCRYPT);
+        $pdoStatement->bindValue("password_",$crpPassword);
 
         return $pdoStatement;
 
@@ -134,7 +135,7 @@ class Users
     public function duplicatataUsername($response):bool
     {
 
-        $isUsernameExist = $this->getByUsername($_POST['Username']);
+        $isUsernameExist = $this->getByUsername($_POST['username']);
         //Gestion doublon Username
         if($isUsernameExist->rowCount() === 1)
         {
